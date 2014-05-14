@@ -1,0 +1,6 @@
+.bundle
+.idea/
+db/*.sqlite3
+tmp/
+log/*.log
+public/assets/

@@ -1,0 +1,18 @@
+- content_for :head do
+  :javascript
+
+    $(document).ready(function() {
+
+      WordProcessor.Element.Struct.DocMorph.init(#{inEditMode}, $("#doc_container"))
+
+      if(WordProcessor.Element.Struct.DocMorph.root.inEditMode) {
+        FB.init($('#input_element_list'), $("#input_element_preview"), $("#input_element_config"))
+      }
+
+      var struct_url = "#{url_for(:controller => :document, :action => :design_structure, :document_id =>  @document.id)}"
+      var field_url = "#{url_for(:controller => :document, :action => :design_fields, :document_id =>  @document.id)}"
+      var pict_url = "#{url_for(:controller => :document, :action => :design_pictures, :document_id =>  @document.id)}"
+
+      WordProcessor.Element.Struct.DocMorph.assembleDocument(struct_url, field_url, pict_url)
+
+    });

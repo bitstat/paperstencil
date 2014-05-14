@@ -1,0 +1,15 @@
+- first = value["date_format"].split("/").first
+- second = value["date_format"].split("/").second
+.col-md-2
+  %input.form-control.form-morph(type="text" size="2" class="#{first}" name="field#{field.id}[#{first}]" value="#{ user_value && user_value[first] }")
+  %label.control-label
+    = first.upcase
+.col-md-2
+  %input.form-control.form-morph(type="text" size="2" class="#{second}" name="field#{field.id}[#{second}]" value="#{ user_value && user_value[second] }")
+  %label.control-label
+    = second.upcase
+.col-md-3
+  %input.form-control.form-morph(type="text" size="4" class="yyyy" name="field#{field.id}[yyyy]" value="#{ user_value && user_value['yyyy'] }")
+  %label.control-label YYYY
+%input.date_picker(type="hidden")
+.clear

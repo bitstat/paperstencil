@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>QUnit Composite Test Suite</title>
+	<link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+	<link rel="stylesheet" href="../qunit-composite.css">
+	<script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+	<script src="../qunit-composite.js"></script>
+	<script>
+		QUnit.testSuites([
+			"../node_modules/qunitjs/test/index.html",
+			"../node_modules/qunitjs/addons/canvas/canvas.html",
+			"../node_modules/qunitjs/addons/close-enough/close-enough.html",
+			{ name: "step tests", path: "../node_modules/qunitjs/addons/step/step.html" }
+		]);
+	</script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">
+</div>
+</body>
+</html>

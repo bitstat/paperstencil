@@ -1,0 +1,22 @@
+%input{:type=>"file", :id=>"addPictureFileSelect", :accept=>"image/*", :style=>"display:none"}
+
+#doc_container
+
+- if session[:show_demo_guide]
+  - content_for :head do
+    :javascript
+      $(document).ready(function() {
+        DemoGuide.initDesignEditGuides();
+        DemoGuide.showDesignEditGuide();
+      });
+
+  - # Demo is done after this page. Set it to false.
+  - session[:show_demo_guide] = false
+
+- content_for :head do
+  :css
+    .modal-body {padding: 1rem;}
+    .modal-footer{margin-top: 1rem;}
+    .form-group {margin-bottom : 0.5rem;}
+
+= render :partial => "document/common_js", :locals => { :inEditMode => true }

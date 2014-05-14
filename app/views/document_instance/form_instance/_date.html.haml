@@ -1,0 +1,4 @@
+- if not ['mm', 'dd', 'yyyy'].any? { |f| value[f].nil? }
+  .data
+    - date = Date.new(*['yyyy', 'mm', 'dd'].map { |f| Integer(value[f]) })
+    = date.to_s

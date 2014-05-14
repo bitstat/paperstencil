@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
+    %title
+      = "Paper Stencil"
+    = stylesheet_link_tag    "document", media: "all"
+    %link{href: "//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic", rel: "stylesheet", type: "text/css"}
+    = javascript_include_tag "document_instance"
+    = yield :head
+    = csrf_meta_tag
+  %body
+    .doc_instance
+      .container.flash
+        - flash.each do |name, msg|
+          %div{:class => name}
+            != msg
+      .content-box
+        = yield
+      .span-15.footer.last
+        .span-3.powered_by.right.last
+          Powered by
+          %span.logo
+            %a(href="http://www.paperstencil.com")
+              Paper Stencil
+    = yield :per_page_js
+= render :partial => "layouts/shared"
+:javascript
+  if (document.documentElement.clientWidth < 768) {
+    document.querySelector("meta[name=viewport]").setAttribute('content', document.querySelector("meta[name=viewport]").getAttribute('content') + ", initial-scale=1.3")
+  }
+
+

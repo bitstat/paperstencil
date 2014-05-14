@@ -1,0 +1,18 @@
+.field_list.hide
+  %div.field_list_close
+    .right
+      %a.done(href="#") Close
+  .clear
+  %div
+    %ul
+      - fields.each do |field|
+        %li(data-field_id="#{field.id}" class="field-col-#{field.id}")
+          .col_name
+            = field.value["label_text"]
+  %div.field_list_close
+    %a.done(href="#") Done
+.add_field
+  %a(href="#")
+    +
+.clear
+

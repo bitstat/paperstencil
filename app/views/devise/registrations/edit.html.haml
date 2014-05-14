@@ -1,0 +1,59 @@
+.row.prepend-top5rem
+  .col-md-8.col-xs-8
+    .section_header.append-bottom
+      Edit #{resource_name.to_s.humanize}
+.row
+  .col-md-8.col-xs-8
+    = devise_error_messages!
+
+.row
+  .col-md-5.col-xs-5
+    = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+      %p
+        = f.label :email
+        %br/
+        = resource.email
+      %p
+        = f.label :first_name
+        %br/
+        = f.text_field :first_name, :class => "form-control"
+      %p
+        = f.label :last_name
+        %br/
+        = f.text_field :last_name, :class => "form-control"
+      - unless resource.open_auth?
+        %p
+          = f.label :password
+          %i (leave blank if you don't want to change it)
+          %br/
+          = f.password_field :password, :class => "form-control"
+        %p
+          = f.label :password_confirmation
+          %br/
+          = f.password_field :password_confirmation, :class => "form-control"
+      - unless resource.open_auth?
+        %p
+          = f.label :current_password
+          %i (we need your current password to confirm your changes)
+          %br/
+          = f.password_field :current_password, :class => "form-control"
+      %p
+        = f.label :plan
+        %br/
+        %select(name="user[plan]")
+          - ['pay_as_you_go', 'monthly'].each do |plan|
+            %option{ :value => plan, :selected => resource.plan == plan ? "selected" : nil }
+              = plan.humanize
+
+      - if current_user.demo_user?
+        %p
+          %button.btn.btn-primary{type: "button", :class=>"disable_click", :rel=>"tipsy", :title=>"Disabled for demo user"} Update
+      - else
+        %p= f.submit "Update", :class=> "btn btn-primary"
+- unless current_user.demo_user?
+  .row
+    .col-md-5.col-xs-5
+      %hr
+      %h5 Cancel my account
+      %p
+        Unhappy? #{link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure to cancel your account?", :method => :delete}.

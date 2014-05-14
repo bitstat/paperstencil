@@ -1,0 +1,16 @@
+- temp = { }
+- if document_instance
+  - document_instance.field_instances.each do |field_instance|
+    - temp[field_instance.design['db_id'].to_i] = field_instance
+%tr{:class => "saved_instance_row #{(index %2) !=0? "alt" : "" }"}
+  %td
+    = "##{document_instance.id}"
+  - fields.each_with_index do |field, i|
+    - if document_instance
+      - field_instance = temp[field.id]
+      %td.hide(class="field-col-#{field.id}")
+        - if field_instance
+          = render :partial => "document_instance/form_instance/#{field_instance.design['type']}", :locals => { :value => field_instance.value, :field_instance => field_instance, :root_instance =>  document_instance}
+    - else
+      %td.hide(class="field-col-#{field.id}")
+        &nbsp;

@@ -1,0 +1,11 @@
+%div{:id=>"signature_#{field.id}", :class=> "sigPad sigWrapper"}
+  %canvas{:class=>"pad", :width=>"198", :height=>"55"}
+  %input{:type => "hidden", :value => user_value, :name => "field#{field.id}" }
+  %a.clear_signature{:href=>"#"}
+    clear signature
+
+
+:javascript
+  $(document).ready(function() {
+    $("#signature_"+ "#{field.id}").signaturePad({validateFields : false, drawOnly:true, clear: ".clear_signature", output:$("input[name=" + "field#{field.id}" + "]")});
+  });

@@ -1,0 +1,35 @@
+#doc_container
+  - if document.fields.any? { |f| f.error }
+    .error_txt
+      There was a problem with your submission.
+      The section that has errors are highlighted below.
+      Please correct the errors and try again
+  - document.fields.each do |field|
+    - value = field.value
+    .field.modal.fade{:class => (field.error ? "error" : nil), :id=>"field_container#{field.value["id"]}"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"}
+              &times;
+            %h4.modal-title
+              = value["label_text"]
+              - if value["required"]
+                %span.required *
+          .modal-body
+            - if field.error
+              %p.error_box
+                = field.error
+            %div.container
+              = render :partial => "document/form/#{value["type"]}", :locals => { :value => value, :field => field, :user_value => params["field" + field.id.to_s] }
+          .modal-footer
+            %button.btn.btn-default{"data-dismiss" => "modal"} Close
+            %button.btn.btn-primary{"data-dismiss" => "modal", :name => "btn_done" } Done
+
+%div{:style=>'margin-top:2rem'}
+  - if current_user.demo_user?
+    %input{:type=>"button", :value=>"Submit", :class=>"disable_click", :rel=>"tipsy", :title=>"Disabled for demo user"}
+  -else
+    = submit_tag "Submit"
+
+= render :partial => "document/common_js", :locals => { :inEditMode => false }

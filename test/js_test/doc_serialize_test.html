@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Doc Test</title>
+
+    <link rel="stylesheet" href="/assets/js_test/qunit/qunit/qunit.css">
+</head>
+<body>
+
+<h1 id="qunit-header">Doc Serialize Test Suite</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<div id="qunit-fixture">
+
+</div>
+
+<script src="/assets/js_test/qunit/qunit/qunit.js"></script>
+<script src="keyboard_util.js"></script>
+
+<script src="/assets/jquery.js"></script>
+<script src="/assets/document.js"></script>
+<script src="/assets/form_builder/jquery.utils.js"></script>
+<script src="/assets/form_builder/jquery.tmpl.js"></script>
+<script src="/assets/form_builder/form_builder.js"></script>
+
+
+<script>
+    QUnit.config.autostart = false;
+    $(document).ready(function () {
+        QUnit.start();
+
+        module("Doc Serialize Test", {
+            setup:function () {
+                $("#qunit-fixture").append('<div id="doc_container"></div>');
+                WordProcessor.init($("#doc_container"));
+                equal($(".doc").length, 1, "Check presence of doc element");
+            }
+        });
+
+
+        test("Empty doc serialize", function () {
+            var doc = $(".doc");
+            equal(JSON.stringify({
+                "document": [],
+                "fields": []
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+        test("Doc serialize simple text", function () {
+            var doc = $(".doc");
+            var txt = "Some test data";
+            doc.append(txt);
+            equal(JSON.stringify({
+                "document": [txt],
+                "fields": []
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+        test("Doc serialize simple multiline text", function () {
+            var doc = $(".doc");
+            var txt = "Some test data";
+            var txt2 = "yet another data";
+
+            doc.append(txt);
+            doc.append(txt2);
+
+            equal(JSON.stringify({
+                "document": [txt, txt2],
+                "fields": []
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+        test("Doc serialize with element node", function () {
+            var doc = $(".doc");
+            var txt = "Some test data";
+
+            doc.append(txt);
+            doc.append("<br/>");
+
+            equal(JSON.stringify({
+                "document": [txt, {"meta":{"type":"BR"},"data":[]}],
+                "fields": []
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+        test("Doc serialize with nested element node", function () {
+            var doc = $(".doc");
+            var txt = "Some test data";
+
+            doc.append(txt);
+            doc.append("<b><i></i></b>");
+
+            var txt2 = "yet another data";
+            doc.find("i").html(txt2);
+
+            equal(JSON.stringify({
+                "document":[txt,{"meta":{"type":"B"},"data":[{"meta":{"type":"I"},"data":[txt2]}]}],
+                "fields": []
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+        test("Doc serialize with line node", function () {
+            var doc = $(".doc");
+            var txt = "Some test data";
+
+            var line = WordProcessor.newLineContainer();
+            line.html(txt);
+            doc.append(line);
+
+            equal(JSON.stringify({
+                "document":[{"meta":{"type":"line"},"data":[txt]}],
+                "fields": []
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+        test("Doc serialize with line node & field", function () {
+            FB.init();
+            var doc = $(".doc");
+
+            var line = WordProcessor.newLineContainer();
+            var fieldElement = WordProcessor.newFieldElement();
+
+            line.append(fieldElement);
+            doc.append(line);
+
+            var field = fieldElement.find("img").data("field");
+
+            equal(JSON.stringify({
+                "document":[{"meta":{"type":"line"},"data":[
+                    {"meta":{"type":"inline"},"data":[
+                        {"meta":{"type":"field","fieldRef":field.data().id}}
+                    ]}
+                ]}],
+                "fields":[{"label_text":"Untitled","default_text":"","field_size":"medium","required":false,"range_min":null,"range_max":null,"range_type":"characters","id":field.data().id,"type":"text"}]
+            }), JSON.stringify(WordProcessor.serialize()), "Doc serialized");
+        });
+
+    });
+</script>
+</body>
+</html>

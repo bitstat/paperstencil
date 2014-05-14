@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<!--
+   Copyright 2010 Ephox Corporation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<project name="JSRobot" default="jar">
+	
+	<target name="compile">
+		<mkdir dir="classes" />
+		<javac target="1.5" source="1.5" srcdir="src/main/java" destdir="classes" classpath="lib/jsobject.jar" />
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="JSRobot.jar">
+			<fileset dir="classes" />
+			<zipfileset dir="." includes="LICENSE" prefix="META-INF/" />
+		</jar>
+		
+		<signjar jar="JSRobot.jar" alias="jsrobot" keystore="keystore" keypass="password" storepass="password" storetype="jks" />
+	</target>
+	
+	<target name="dist" depends="jar">
+		<tstamp>
+			<format locale="en,US" timezone="GMT" property="timestamp" pattern="yyyy-MM-dd"/>
+		</tstamp>
+		<zip destfile="JSRobot-${timestamp}.zip">
+			<zipfileset dir="." prefix="jsrobot">
+				<exclude name=".*/**" />
+				<exclude name=".*" />
+				<exclude name="bin/**" />
+				<exclude name="classes/**" />
+				<exclude name="JSRobot*.zip" />
+			</zipfileset>
+		</zip>
+	</target>
+	
+	<target name="clean">
+		<delete dir="classes" />
+		<delete file="JSRobot.jar" />
+		<delete file="JSRobot*.zip" />
+	</target>
+</project>

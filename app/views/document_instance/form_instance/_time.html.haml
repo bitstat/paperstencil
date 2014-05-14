@@ -1,0 +1,3 @@
+- if not ['h','m','s'].all? { |f| value[f].strip.empty? }
+  .data
+    = ['h','m','s'].map { |f| value[f] }.join(':') + " "+ value['ampm'].upcase

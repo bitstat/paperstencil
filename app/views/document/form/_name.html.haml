@@ -1,0 +1,16 @@
+- if value["name_format"] == "extended"
+  .col-md-2
+    %input.form-control.form-morph(type="text" size="5" name="field#{field.id}[title]" value="#{user_value && user_value['title']}")
+    %label.control-label Title
+.col-md-4
+  %input.form-control.form-morph(type="text" size="15" name="field#{field.id}[first]" value="#{user_value && user_value['first']}")
+  %label.control-label First
+.col-md-4
+  %input.form-control.form-morph(type="text" size="15" name="field#{field.id}[last]" value="#{user_value && user_value['last']}")
+  %label.control-label Last
+- if value["name_format"] == "extended"
+  .col-md-2
+    %input.form-control.form-morph(type="text" size="5" name="field#{field.id}[suffix]" value="#{user_value && user_value['suffix']}")
+    %label.control-label Suffix
+.clear
+

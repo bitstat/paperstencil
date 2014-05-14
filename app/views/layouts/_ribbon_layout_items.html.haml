@@ -1,0 +1,72 @@
+%ul
+  %li
+    - if current_user.demo_user?
+      %img{:src => "#{asset_path('actions/24/document-save.png')}", :class => "disable_click", :alt=> "save", :rel=>"tipsy", :title=>"Save - Disabled for demo user"}
+    - else
+      %span.wp_cmd{"data-cmd" => 'save'}
+        %img{:src => "#{asset_path('actions/24/document-save.png')}", :class => "save", :alt=> "save", :rel=>"tipsy", :title=>"Save"}
+      = form_tag({:controller => "document", :action => "design_save", :document_id => @document.id}, {:method => :post, :id => "doc_design_form", :remote => true}) do
+        = hidden_field_tag :doc_design
+  %li
+    %span.wp_cmd{"data-cmd" => 'cut'}
+      %img{:src => "#{asset_path('actions/24/edit-cut.png')}", :alt=> "cut", :rel=>"tipsy", :title=>"Cut"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'copy'}
+      %img{:src => "#{asset_path('actions/24/edit-copy.png')}", :alt=> "copy", :rel=>"tipsy", :title=>"Copy"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'paste'}
+      %img{:src => "#{asset_path('actions/24/edit-paste.png')}", :alt=> "paste", :rel=>"tipsy", :title=>"Paste"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'bold'}
+      %img{:src => "#{asset_path('actions/24/format-text-bold.png')}", :alt=> "bold", :rel=>"tipsy", :title=>"Bold"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'italic'}
+      %img{:src => "#{asset_path('actions/24/format-text-italic.png')}", :alt=> "italic", :rel=>"tipsy", :title=>"Italic"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'underline'}
+      %img{:src => "#{asset_path('actions/24/format-text-underline.png')}", :alt=> "underline", :rel=>"tipsy", :title=>"Underline"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'strikethrough'}
+      %img{:src => "#{asset_path('actions/24/format-text-strikethrough.png')}", :alt=> "strikethrough", :rel=>"tipsy", :title=>"Strikethrough"}
+
+  %li
+    %span.wp_cmd{"data-cmd" => 'justifyleft'}
+      %img{:src => "#{asset_path('actions/24/format-justify-left.png')}", :alt=> "justify left", :rel=>"tipsy", :title=>"Justify left"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'justifycenter'}
+      %img{:src => "#{asset_path('actions/24/format-justify-center.png')}", :alt=> "justify center", :rel=>"tipsy", :title=>"Justify center"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'justifyright'}
+      %img{:src => "#{asset_path('actions/24/format-justify-right.png')}", :alt=> "justify right", :rel=>"tipsy", :title=>"Justify right"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'insertorderedlist'}
+      %img{:src => "#{asset_path('actions/24/view-list-compact-symbolic-numeric.png')}", :alt=> "ordered list", :rel=>"tipsy", :title=>"Ordered list"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'insertunorderedlist'}
+      %img{:src => "#{asset_path('actions/24/view-list-compact-symbolic.png')}", :alt=> "unordered list", :rel=>"tipsy", :title=>"Unordered list"}
+
+  %li
+    %span.wp_cmd{"data-cmd" => 'blockquote'}
+      %img{:src => "#{asset_path('actions/24/leftquote.png')}", :alt=> "left quote", :rel=>"tipsy", :title=>"Left quote"}
+
+  %li
+    %span.wp_cmd{"data-cmd" => 'indent'}
+      %img{:src => "#{asset_path('actions/24/format-indent-more.png')}", :alt=> "indent more", :rel=>"tipsy", :title=>"Indent more"}
+  %li
+    %span.wp_cmd{"data-cmd" => 'outdent'}
+      %img{:src => "#{asset_path('actions/24/format-indent-less.png')}", :alt=> "indent less", :rel=>"tipsy", :title=>"Indent less"}
+
+  %li
+    %span.wp_cmd{"data-cmd" => 'addPicture'}
+      %img{:src => "#{asset_path('actions/24/picture.png')}", :alt=> "picture", :rel=>"tipsy", :title=>"Picture"}
+
+  %li
+    %span.wp_cmd{"data-cmd" => 'addTable'}
+      %img{:src => "#{asset_path('actions/24/table.png')}", :alt=> "table", :rel=>"tipsy", :title=>"Table"}
+
+  %li
+    %span.native_cmd{"data-cmd" => 'redo'}
+      %img{:src => "#{asset_path('actions/24/edit-redo.png')}", :alt=> "redo", :rel=>"tipsy", :title=>"Redo"}
+  %li
+    %span.native_cmd{"data-cmd" => 'undo'}
+      %img{:src => "#{asset_path('actions/24/edit-undo.png')}", :alt=> "undo", :rel=>"tipsy", :title=>"Undo"}

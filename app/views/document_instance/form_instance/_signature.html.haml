@@ -1,0 +1,9 @@
+- if not value.empty?
+  .data
+    %div{:id=>"signature_#{field_instance.id}", :class=> "sigPad"}
+      %canvas{:class=>"pad", :width=>"198", :height=>"55"}
+
+:javascript
+  $(document).ready(function() {
+    $("#signature_"+ "#{field_instance.id}").signaturePad({displayOnly:true}).regenerate(#{value});
+  });

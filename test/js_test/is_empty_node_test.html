@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Doc Test</title>
+
+    <link rel="stylesheet" href="/assets/js_test/qunit/qunit/qunit.css">
+</head>
+<body>
+
+<h1 id="qunit-header">Element Node Empty Check Test Suite</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<div id="qunit-fixture">
+
+</div>
+
+<script src="/assets/js_test/qunit/qunit/qunit.js"></script>
+<script src="keyboard_util.js"></script>
+
+<script src="/assets/jquery.js"></script>
+<script src="/assets/document.js"></script>
+
+
+<script>
+    QUnit.config.autostart = false;
+    $(document).ready(function () {
+        QUnit.start();
+
+        module("Empty Node Test", {
+            setup:function () {
+                $("#qunit-fixture").append('<div id="doc_container"></div>');
+                WordProcessor.init($("#doc_container"));
+                equal($(".doc").length, 1, "Check presence of doc element");
+            }
+        });
+
+        test("Check empty node 1", function () {
+            var doc = $(".doc");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+        });
+
+        test("Check empty node - blank text", function () {
+            var doc = $(".doc");
+            doc.text("");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.text(" ");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+        });
+
+        test("Check empty node - blank html", function () {
+            var doc = $(".doc");
+
+            doc.html(" ");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.html("&nbsp;");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+        });
+
+        test("Check empty node - element node - break", function () {
+            var doc = $(".doc");
+
+            doc.html("<br/>");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+        });
+
+        test("Check empty node - element node - nested", function () {
+            var doc = $(".doc");
+
+            doc.html("<span></span>");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.html("<span> </span>");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.html("<span>&nbsp;</span>");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.html("<div> <span><br></span> </div>");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.html("<div><span><br></span> <span><div><span><span>&nbsp;</span></span></div></span></div>");
+            equal(true, WordProcessor.isEmptyNode(doc.get(0)), "Node is empty");
+
+            doc.html("<div><span><br></span> <span><div><span><span>&nbsp;</span></span></div></span></div> <span><div><span><span>1</span></span></div></span></div>");
+            equal(false, WordProcessor.isEmptyNode(doc.get(0)), "Node is not empty");
+
+            doc.html("<span><img/></span>");
+            equal(false, WordProcessor.isEmptyNode(doc.get(0)), "Node is not empty");
+
+            doc.html("<div><span><br></span> <span><div><span><span><img/></span></span></div></span></div>");
+            equal(false, WordProcessor.isEmptyNode(doc.get(0)), "Node is not empty");
+
+            doc.html("<div><span><br></span> <span><div><span><span><input/></span></span></div></span></div>");
+            equal(false, WordProcessor.isEmptyNode(doc.get(0)), "Node is not empty");
+        });
+    });
+</script>
+</body>
+</html>

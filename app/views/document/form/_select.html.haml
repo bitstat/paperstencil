@@ -1,0 +1,7 @@
+%select.form-control.form-morph{:class => value["field_size"], :name => "field#{field.id}"}
+  %option{:value=>""}
+    = "--Select--"
+  - value["options"].each_with_index do |o, i|
+    %option{:value => i, :selected => user_value.nil? ? o["checked"] || nil : user_value == i.to_s }
+      = o["text"]
+.clear

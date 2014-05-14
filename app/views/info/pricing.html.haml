@@ -1,0 +1,76 @@
+.pricing
+  .row
+    .col-md-12.col-xs-12.heading
+      15-days Free Trial on All Plans
+  .row
+    .col-md-12.col-xs-12.sub_heading
+      No credit card required during trial
+  .row
+    .col-md-12.col-xs-12.sub_heading
+      %br
+      For
+      %span{:style=>'', :class=>'highlight_box'}
+        Custom pricing / On premises
+      installations, email us at info@paperstencil.com
+
+  .centered
+    .plan.no_r
+      .heading
+        %h1
+          %a{:href => "#{url_for(new_registration_path("user", :plan => 'monthly'))}"} Monthly
+        %p
+          %h2 $45/month
+        %p
+          %h3 15-days free trial
+      .features
+        %ul.primary
+          %li
+            %strong Unlimited
+            documents
+          %li
+            %strong 15 GB
+            Storage included
+            %br &nbsp;
+        %ul.secondary
+          %li
+            %strong Primary email
+            support
+      %p
+      %p
+        = link_to "Signup", new_registration_path("user", :plan => 'monthly'), :class=>"btn btn-primary"
+    .plan
+      .heading
+        %h1
+          %a{:href => "#{url_for(new_registration_path("user", :plan => 'pay_as_you_go'))}"} Pay as you go
+        %p
+          %h2 $7 per document
+        %p
+          %h3 15-days free trial
+      .features
+        %ul.primary
+          %li
+            %strong Unlimited
+            documents
+          %li
+            %strong 500 MB
+            Storage
+            %br per document included
+        %ul.secondary
+          %li
+            %strong Primary email
+            support
+      %p
+      %p
+        = link_to "Signup", new_registration_path("user", :plan => 'pay_as_you_go'), :class=>"btn btn-primary"
+.clear
+
+.pricing_addons.centered
+  .addon.dotted_bottom.clear
+    .title.left
+      Additional Storage ( for all plans )
+    .price.left
+      $2 / GB / month
+  %div
+    %br
+  %div
+    Gratis plan available for Charity / Non-profit organizations. Email us at info@paperstencil.com

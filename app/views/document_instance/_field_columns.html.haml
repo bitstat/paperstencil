@@ -1,0 +1,7 @@
+%thead
+  %tr
+    %td.row_id
+      = "#"
+    - fields.each_with_index do |field, i|
+      %td.hide(class="field-col-#{field.id}")
+        = field.value["label_text"]

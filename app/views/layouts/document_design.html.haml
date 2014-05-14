@@ -1,0 +1,231 @@
+!!!
+%html
+  %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
+  %head
+    %title
+      = "Paper Stencil"
+    = stylesheet_link_tag    "document", media: "all"
+    %link{href: "//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic", rel: "stylesheet", type: "text/css"}
+    = javascript_include_tag "document_design"
+    = yield :head
+    = csrf_meta_tags
+  %body
+    #share_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "shareModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+            %h4.modal-title
+              %span.glyphicon.glyphicon-share
+              Document share options
+          .modal-body
+            = render :partial => "document/share", :locals => { :document => @document }
+          .modal-footer
+            %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
+            - if current_user.demo_user?
+              %button.btn.btn-primary{type: "button", :class=>"disable_click", :rel=>"tipsy", :title=>"Disabled for demo user"} Save changes
+            - else
+              %button.btn.btn-primary{type: "button", :class=>"save"} Save changes
+    %div.doc_designer
+      .demo_overlay
+      .container.fixed_ribbon
+        .container.doc_breadcrumb
+          .col-xs-8.col-md-9
+            %ol.breadcrumb
+              %li
+                %a{:href=>"#{url_for(:controller => "document", :action => "design_list")}"}
+                  %span.glyphicon.glyphicon-book{:style=>"color:#7db6d8"}
+                  All Documents
+              %li.active
+                #show_edit_doc_title
+                  .edit_mode.form-inline{:style=>"display:none"}
+                    = form_tag url_for(:controller => "document", :action => "title_update", :document_id => @document.id), :id => "form-doc-title", :remote => true, 'data-type' => 'json' do
+                      = text_field_tag :title, @document.title, {:class=>"form-control"}
+                      - if current_user.demo_user?
+                        %input{:type=>'button', :value=>"Update", :class => "btn btn-primary btn-xs disable_click", :rel=>"tipsy", :title=>"Disabled for demo user"}
+                      - else
+                        %button{:class => "btn btn-primary btn-xs", :type => "submit"}
+                          Update
+                      %button{:class => "btn btn-default btn-xs"}
+                        = "Cancel"
+                  .display_mode
+                    .title_txt
+                      = @document.title
+                    %span
+                      %a.edit{:href=>"javascript:void(0)"}
+                        %span.glyphicon.glyphicon-pencil{:style=>"color:#c84755"}
+                        edit
+
+          .col-xs-4.col-md-3
+            %ul.doc_options.text-right
+              %li
+                %button.btn.btn-wp-primary.btn-xs.share_document{"data-toggle" => "modal", "data-target" => "#share_modal", :style=>"background-color:#c84775"}
+                  %b
+                    %span.glyphicon.glyphicon-share
+                    Share
+              %li
+                %a.btn.btn-wp-primary.btn-xs.render_document{:href=>"/a/#{@document.address}", :target=>"_new", :rel=>"tipsy", :title=>"Click to view what end user will see"}
+                  %b
+                    %span.glyphicon.glyphicon-play-circle
+                    Render
+        .container.doc_actions.navbar-default
+          .col-xs-12.visible-xs
+            .navbar-header
+              %button.navbar-toggle{"data-target" => "#ribbon_layout_collpase", "data-toggle" => "collapse", type: "button", :style=>"float:left"}
+                Layout & Format
+              %button.navbar-toggle{"data-target" => "#ribbon_capture_collpase", "data-toggle" => "collapse", type: "button", :style=>"float:left"}
+                Data capture
+              %button.navbar-toggle{"data-target" => "#ribbon_payment_collpase", "data-toggle" => "collapse", type: "button", :style=>"float:left"}
+                Accept payment
+              %button.navbar-toggle{:style=>"float:left", :id=> "selection_tool_xs", :rel=>"tipsy", :title=>"Text selection"}
+                [...]
+            .tab-content.clear
+              .navbar-collapse.collapse{:id => "ribbon_layout_collpase"}
+                = render :partial => "layouts/ribbon_layout_items"
+              .navbar-collapse.collapse{:id => "ribbon_capture_collpase"}
+                = render :partial => "layouts/ribbon_capture_items"
+              .navbar-collapse.collapse{:id => "ribbon_payment_collpase"}
+                = render :partial => "layouts/ribbon_payment_items"
+          .col-md-12.col-lg-12.visible-lg.visible-md.col-sm-12.visible-sm
+            %ul.nav.nav-tabs
+              %button.btn.btn-default.btn-sm{:style=>"float:right", :id=> "selection_tool_md", :rel=>"tipsy", :title=>"Text selection"}
+                [...]
+              %li.active.layout_tab
+                %a{href: "#ribbon_layout", "data-toggle"=>"tab", :style=>"color:#495672"}
+                  Layout & Format
+              %li.capture_tab
+                %a{href: "#ribbon_capture", "data-toggle"=>"tab", :style=>"color:#495672"}
+                  Data capture
+              %li.payment_tab
+                %a{href: "#ribbon_payment", "data-toggle"=>"tab", :style=>"color:#495672"}
+                  Accept payment
+            .tab-content
+              #ribbon_layout.tab-pane.active
+                = render :partial => "layouts/ribbon_layout_items"
+              #ribbon_capture.tab-pane
+                = render :partial => "layouts/ribbon_capture_items"
+              #ribbon_payment.tab-pane
+                = render :partial => "layouts/ribbon_payment_items"
+      .flash
+        - flash.each do |name, msg|
+          %div{:class => name}
+            != msg
+      .content-box.container
+        = yield
+      #choose_widget_field_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "chooseFieldLabel", role: "dialog", tabindex: "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+              .modal-title
+                %form.form-inline{role: "form"}
+                  .form-group
+                    %label Field type :
+                  .form-group
+                    %select{:id=>"input_element_list", :class=> "form-control"}
+            .modal-body
+              %div.section_header
+                Preview
+              %div{role: "form"}
+                #input_element_preview
+
+              %div.section_header.margin_top
+                Config
+              #input_element_config
+
+            .modal-footer
+              %button.btn.btn-default{:name=>"btn_close", "data-dismiss" => "modal"} Close
+              %button.btn.btn-primary{:name=>"btn_done"} Done
+    = yield :per_page_js
+= render :partial => "layouts/shared"
+
+:javascript
+  $(document).ready(function() {
+
+      $(".content-box").click(function() {
+        WordProcessor.Element.Struct.DocMorph.root.setCaretFocus(false)
+      })
+
+      $(".doc_actions .native_cmd").click(function() {
+        var cmd = $(this).attr("data-cmd");
+        var param = $(this).attr("data-value");
+        param = (param === undefined ? null : param);
+        window.document.execCommand(cmd, false, param);
+      });
+
+      $(".doc_actions .wp_cmd").click(function() {
+        var cmd = $(this).attr("data-cmd");
+        var param = $(this).attr("data-cmd-value");
+        param = (param === undefined ? null : param);
+        WordProcessor.UIActions[cmd](param);
+      });
+
+
+        $('#doc_design_form').submit(function() {
+            $('#doc_design').val(JSON.stringify(WordProcessor.Element.Struct.DocMorph.root.serialize()));
+            return true;
+        });
+
+        $("#doc_design_form").bind("ajax:success", function(xhr, data, res){
+             if (data.status === 'ok') {
+              alert("Document saved successfully");
+             }
+           });
+
+
+    $("#share_modal").each(function() {
+      var ele = $(this);
+      var form = ele.find("form");
+
+      ele.find(".save").click(function() {
+        form.submit();
+      });
+
+      form.bind("ajax:success", function(xhr, data, res){
+           if (data.status === 'ok') {
+            alert("Share options saved successfully");
+           }
+      });
+
+    });
+
+    $("#show_edit_doc_title").each(function() {
+      var ele = $(this);
+
+      var form = ele.find("#form-doc-title");
+
+      form.bind("ajax:before", function() {
+        $(this).find("button[type=submit]").attr("disabled", true);
+      });
+
+      form.bind("ajax:complete", function() {
+        $(this).find("button[type=submit]").attr("disabled", false);
+      });
+
+      form.bind("ajax:success", function(data, res, xhr) {
+        var title_text_box = $(this).find("input[name=title]");
+        var title_text_div = ele.find(".display_mode .title_txt");
+
+        if (res.status == "ok") {
+            title_text_div.html(title_text_box.val());
+        } else {
+            title_text_box.val(title_text_div.html());
+        }
+        ele.find(".edit_mode").toggle();
+        ele.find(".display_mode").toggle();
+        return false;
+      });
+
+      ele.find(".cancel").click(function() {
+        ele.find(".edit_mode").toggle();
+        ele.find(".display_mode").toggle();
+        return false;
+      });
+
+      ele.find(".edit").click(function() {
+        ele.find(".edit_mode").toggle();
+        ele.find(".display_mode").toggle();
+        return false;
+      });
+    });
+  });

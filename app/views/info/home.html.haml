@@ -1,0 +1,82 @@
+.row.pitch
+  .highlight1
+    %h2
+      PDF Form like Documents
+    %h3
+      No plugins | Tablet | Web
+    .clear
+    .actions
+      %ul
+        %li
+          %a{:href=>"#features"}
+            %button.btn.btn-lg{:style=>"background-color:#77caa9"}
+              .white_bold
+                &laquo; Features
+        %li
+          %a{:href=> url_for(:action => "login", :controller => "/demo")}
+            %button.btn.btn-lg{:style=>"background-color:#C84755"}
+              .white_bold
+                Demo &raquo;
+  .highlight2
+    %h4
+      Data | Contracts | Signatures | Payments
+%a{:name=>"features"}
+  %span.anchor_feature
+    &nbsp;
+.row.feature
+  .col-xs-12.col-md-12
+    .col-xs-4.col-md-4.text-left
+      %img{:src=>"#{asset_path('compose.png')}"}
+    .col-xs-8.col-md-8
+      .title
+        Create PDF Form like documents on the go
+      .desc
+        Wordprocessors such as "MS Word" are good for constructing documents. Web forms are good at validating and
+        capturing user input. Meet "Paperstencil", a cross over product between Wordprocessor and Web form.
+        Now you can create and share PDF Form like documents, in minutes.
+        %br
+        &nbsp;
+        %ul
+          %li
+            %a{:href=>'https://s3.amazonaws.com/paperstencil/assets/wordprocessor.png', :target => "_new"}
+              Screenshot : Mixing words and form elements.
+          %li
+            %a{:href=>'https://s3.amazonaws.com/paperstencil/assets/wordprocessor.gif', :target => "_new"}
+              Quick animation : Mixing words and form elements.
+        %ul
+          %li
+            %a{:href=>'https://s3.amazonaws.com/paperstencil/assets/layout.png', :target => "_new"}
+              Screenshot : Using nested table to control page layout.
+          %li
+            %a{:href=>'https://s3.amazonaws.com/paperstencil/assets/layout.gif', :target => "_new"}
+              Quick animation : Using nested table to control page layout.
+.row.feature.even
+  .col-xs-12.col-md-12
+    .col-xs-8.col-md-8
+      .title
+        Capture signature and user details
+      .desc
+        Embed natural looking forms inside your website or share them as web address. Validations shall be set against form inputs.
+        Capture user signature and other details through the form.  No external plugins required to view them.
+        Submitted form data shall be viewed in admin console. Export captured data as excel file.
+        %ul
+          %li
+            %a{:href=> url_for(:action => "login", :controller => "/demo")}
+              Demo : Click here to see sample form.
+
+    .col-xs-4.col-md-4.text-right
+      %img{:src=>"#{asset_path('browser.png')}"}
+.row.feature
+  .col-xs-12.col-md-12
+    .col-xs-4.col-md-4.text-left
+      %img{:src=>"#{asset_path('payment.png')}"}
+    .col-xs-8.col-md-8
+      .title
+        Accept payments
+      .desc
+        Paperstencil enables acceptance of payment when the form is submitted.
+        %br
+        %br
+        Note : This feature is currently available to selected few. We will be rolling out to all users in future.
+
+

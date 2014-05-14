@@ -1,0 +1,24 @@
+%div.col-md-10
+  %input.form-control.form-morph(type="text" name="field#{field.id}[line1]" value="#{user_value && user_value['line1']}")
+  %label.control-label Street Address
+%div.col-md-10
+  %input.form-control.form-morph(type="text" name="field#{field.id}[line2]" value="#{user_value && user_value['line2']}")
+  %label.control-label Address Line 2
+%div.col-md-8
+  %input.form-control.form-morph(type="text" name="field#{field.id}[city]" value="#{user_value && user_value['city']}")
+  %label.control-label City
+%div.col-md-8
+  %input.form-control.form-morph(type="text" name="field#{field.id}[state]" value="#{user_value && user_value['state']}")
+  %label.control-label State / Province / Region
+%div.col-md-5
+  %input.form-control.form-morph(type="text" name="field#{field.id}[zip]" value="#{user_value && user_value['zip']}")
+  %label.control-label Postal / Zip code
+%div.col-md-5
+  %select.form-control.form-morph(name="field#{field.id}[country]")
+    - COUNTRIES.each do |continent, countries|
+      %optgroup(label=continent)
+        - countries.each do |country|
+          %option{ :val => country, :selected => user_value.nil? ? value["country"] == country || nil : user_value['country'] == country || nil }
+            = country
+  %label Country
+.clear

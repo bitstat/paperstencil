@@ -1,0 +1,7 @@
+- address_fields = ['line1', 'line2', 'city', 'state', 'zip', 'country']
+- if address_fields.all? { |f| not value[f].to_s.strip.empty? }
+  .data
+    - address_fields.each do |f|
+      .address
+        %b= f
+        %span= value[f]

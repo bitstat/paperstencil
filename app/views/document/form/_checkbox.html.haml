@@ -1,0 +1,7 @@
+%div{:class => value["field_layout"]}
+  - value["checkboxes"].each_with_index do |c, i|
+    .column
+      = check_box("field#{field.id}", i, { :checked => user_value.nil? ? c["checked"] || false : (user_value["#{i}"] != "-1"), :class => "form-morph" }, "#{i}", "-1" )
+      %label.control-label
+        = c["text"]
+  .clear

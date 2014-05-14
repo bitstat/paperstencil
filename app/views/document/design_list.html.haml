@@ -1,0 +1,58 @@
+.demo_overlay
+.section_header
+  Your documents
+
+.text-right.separator
+  - if current_user.demo_user?
+    %button{:class=>"create_new_doc btn btn-wp-primary disable_click", :rel=>"tipsy", :title=>"Disabled for demo user"}
+      Create new
+  - else
+    = button_to "Create new", {:controller => "document", :action => "design_create"}, {:class => "create_new_doc btn btn-wp-primary", :method => :post}
+%h5
+  %ul.doc_list
+    - @documents.each do |doc|
+      %li
+        .row
+          .col-xs-7.col-md-7
+            %span.doc_title
+              %a{:href=>"#{url_for(:controller => "document", :action => "design_edit", :document_id => doc.id)}"}
+                = doc.title
+          .col-xs-5.col-md-5
+            %ul.doc_actions
+              %li.design_edit
+                %a{:href=>"#{url_for(:controller => "document", :action => "design_edit", :document_id => doc.id)}"}
+                  %span.glyphicon.glyphicon-edit{:style=>"color:#77caa9"}
+                  Compose
+              %li.design_instance
+                %a{:href=>"#{url_for(:controller => "document_instance", :action => "list", :document_id => doc.id)}"}
+                  %span.glyphicon.glyphicon-list{:style=>"color:#495672"}
+                  Records
+              %li.design_delete
+                - if current_user.demo_user?
+                  %a.disable_click{:href=>"#", :rel=>"tipsy", :title=>"Disabled for demo user"}
+                    %span.glyphicon.glyphicon-trash{:style=>"color:#F06B48"}
+                    Delete
+                - else
+                  %a{:href=>"#{url_for(:controller => "document", :action => "design_delete", :document_id => doc.id)}", "data-confirm"=>"Are you sure to delete?"}
+                    %span.glyphicon.glyphicon-trash{:style=>"color:#F06B48"}
+                    Delete
+
+- content_for :head do
+  :javascript
+    $(document).ready(function() {
+      $("ul.doc_list li").mouseenter(function() {
+        $(this).find(".doc_actions").show();
+      }).mouseleave(function() {
+        $(this).find(".doc_actions").hide();
+      });
+    });
+
+- if session[:show_demo_guide]
+  - content_for :head do
+    :javascript
+      $(document).ready(function() {
+
+        DemoGuide.initDesignListGuides();
+        DemoGuide.showDesignListGuide();
+
+      });

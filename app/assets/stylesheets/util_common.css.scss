@@ -1,0 +1,162 @@
+.demo_overlay {
+  position:absolute;
+  top:0;
+  left:0;
+  display:none;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1037;
+}
+
+
+@mixin responsive-width {
+  //Upto 767px
+  @media (max-width: $screen-xs-max) {
+    @include adjust_width($screen-xs-max)
+  }
+
+  //768px onwards
+  @media (min-width: $screen-sm) {
+    @include adjust_width($screen-sm)
+  }
+}
+
+
+@mixin adjust_width($screen-size) {
+  @if $screen-size == $screen-xs-max {
+    width : 100%
+  } @else {
+    width: 75rem;
+  }
+}
+
+$min-designer-height: 85rem;
+$border-color: #495672;
+
+@mixin ul_plain {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #333;
+
+  /** By default browser sets font size to 16px.
+  Bootstrap sets default font size to 62.5%, ie( 5/8 ), that is equal to 10px ( 5/8 * 16px = 10px).
+  10px is equal to 1 em, thus 1.7 em,  would equals to 17px **/
+  font-size: 1.7em;
+}
+
+.disable_click {
+  opacity: 0.5;
+  -moz-opacity: 0.5;
+  filter: alpha(opacity = 50);
+}
+
+.btn-wp-primary {
+  background-color: #77caa9;
+  color : #ffffff;
+  font-weight: bold;
+}
+
+.footer-box {
+
+  position:relative;
+
+  //Upto 767px
+  @media (max-width: $screen-xs-max) {
+    @include adjust_width($screen-xs-max)
+  }
+
+  //768px onwards
+  @media (min-width: $screen-sm) {
+    @include adjust_width($screen-sm)
+  }
+  .common_footer {
+    border-top: 3px dotted #c84755;
+
+    div {
+      margin: 10px 0 10px 0;
+      text-align: center;
+    }
+
+    ul {
+      display: inline;
+      padding-left: 0;
+    }
+
+    ul li {
+      padding: 0 10px;
+      border-left: 2px solid #444;
+      list-style: none;
+      display: inline;
+      letter-spacing: 1px;
+    }
+
+    ul li, ul li a {
+      color: #444;
+    }
+
+    li.first {
+      border-left: none;
+    }
+
+  }
+
+  .signed_out_footer {
+    background-color: #F2F2F2;
+    border-top: 3px dotted #c84755;
+    padding: 2rem;
+
+    padding-top: 2rem;
+    .border {
+      padding-right: 4px;
+      margin-right: 5px;
+      border-right: 1px solid #ddd;
+    }
+
+    .heading {
+      font-size: 15px;
+      text-transform: uppercase;
+      font-weight: bold;
+      border-bottom: 2px solid $border-color;
+    }
+
+    .our_product ul {
+      list-style: none outside none;
+      float: left;
+      padding: 2rem;
+    }
+
+    .our_product ul li, .fsection.our_product ul li a {
+      font-size: 12px;
+      font-weight: bold;
+      color: #444;
+      padding: 0.3rem;
+    }
+
+    .our_product ul li a {
+      text-decoration: none;
+    }
+
+    #blog_latest .blog {
+      .entry {
+        color: #666666;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: normal;
+        margin: 0;
+        padding: 0;
+        display:block;
+        .title {
+          margin-top: 5px;
+          a {
+            background-color: #DFEAF4;
+            color: #19558D;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}

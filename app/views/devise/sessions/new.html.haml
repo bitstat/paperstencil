@@ -1,0 +1,55 @@
+.row.signin.prepend-top5rem
+  .col-md-5.col-xs-5
+    .section_header Sign in using
+    %a.provider.google{:href => user_omniauth_authorize_path(:google), :title => "GMail"}
+    %a.provider.yahoo{:href => user_omniauth_authorize_path(:yahoo), :title => "Yahoo"}
+    %hr.clear
+    %a.provider.google_app
+    .clear
+    .google_app_form.hide
+      = form_tag(user_omniauth_authorize_path(:google_apps), :class => 'google_apps') do
+        %p
+          = label_tag :domain, "Google Apps Domain"
+          %span.mandatory *
+          %br/
+          %span www.
+          = text_field_tag :domain, nil, {:class=>"form-control"}
+        %p
+          %input{:type=>"submit", :class=>"btn btn-primary", :value=>"Sign in"}
+
+  .col-md-7.col-xs-7.colborder
+    .row
+      .col-md-11.col-sm-12.col-xs-12.col-md-offset-1
+        .section_header Sign in
+        = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+          %p
+            = f.label :email
+            %span.mandatory *
+            %br/
+            = f.text_field :email, :class => "form-control"
+          %p
+            = f.label :password
+            %span.mandatory *
+            %br/
+            = f.password_field :password, :class => "form-control"
+          - if devise_mapping.rememberable?
+            %p
+              = f.check_box :remember_me
+              = f.label :remember_me
+          %p= f.submit "Sign in", :class=> "btn btn-primary"
+    .row
+      .col-md-11.col-sm-12.col-xs-12.col-md-offset-1
+        = render :partial => "devise/shared/links"
+
+- content_for :head do
+  :javascript
+    $(document).ready(function(){
+        $('.provider.google_app').on('click', function(){
+            $('.google_app_form').toggleClass('hide');
+        });
+
+    });
+  :css
+    p{margin-top:1.7rem;}
+    .hide{display: none;}
+

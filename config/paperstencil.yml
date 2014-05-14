@@ -1,0 +1,13 @@
+development:
+  upload_path: /tmp/paperstencil/uploaded_files
+  open_id_store: /tmp/paperstencil/open_id_store
+
+test:
+  upload_path: /tmp/paperstencil/uploaded_files
+  open_id_store: /tmp/paperstencil/open_id_store
+
+production:
+  upload_path: /var/paperstencil/uploaded_files
+  open_id_store: /var/paperstencil/open_id_store
+
+

@@ -1,0 +1,8 @@
+JSRobot
+Copyright 2010 Ephox Corporation
+
+This product includes software developed by
+Ephox Corporation (http://www.ephox.com/).
+
+This product includes/uses software, QUnit - A JavaScript Unit Testing Framework (http://docs.jquery.com/QUnit)
+License: MIT License (see tests/qunit/QUnit.LICENSE)

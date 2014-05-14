@@ -1,0 +1,551 @@
+// Place all the styles related to the Document controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+$baseFontFamily: 'Ubuntu Mono', "Lucida Console", Monaco, monospace !default;
+$font-family-sans-serif: $baseFontFamily;
+
+@import "bootstrap";
+@import "util_common";
+
+@mixin document_layout {
+  background-color: #fff;
+  border: 1px solid #d0d0d0;
+  overflow: auto;
+
+  min-height: $min-designer-height;
+
+  box-shadow: -3px 0 6px #aaa, 3px 0 6px #aaa;
+
+  margin: 0 auto 2rem 0;
+  padding: 1em 1em;
+
+  -moz-border-radius: .2em;
+  -webkit-border-radius: .2em;
+}
+
+@mixin content_wrap_editmode {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@mixin linemorph_common {
+  clear: both;
+  display: block;
+  line-height: 1.3;
+  min-height: 2rem;
+}
+
+.share_options {
+  ul {
+    list-style: none outside none;
+    padding-left: 0;
+    margin-top: 10px;
+    li {
+      padding: 5px;
+    }
+  }
+}
+
+.share_url {
+  display: block;
+  padding: 0.5rem;
+  border: 1px solid #285e8e;
+  background-color: #e6e6e6;
+}
+
+.doc_designer {
+  @include responsive-width;
+  margin: 5px auto;
+  $ribbon-height: 12rem;
+
+  .fixed_ribbon {
+    @include responsive-width;
+    position: fixed;
+    top: 0px;
+    /** This z-index should be greater than bootstrap modal z-index. **/
+    z-index: 1035;
+
+
+    height: $ribbon-height;
+    padding: 5px 0 5px 0;
+
+    background-color : #f6f6f6;
+    border: 1px solid #d0d0d0;
+    box-shadow: -3px 0 6px #aaa, 3px 0 6px #aaa;
+    -moz-border-radius: .2em;
+    -webkit-border-radius: .2em;
+
+    div[class*='col-'] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .doc_actions {
+      @include responsive-width;
+      overflow: hidden;
+      padding-left: 0;
+      text-align: center;
+      margin-top: .2em;
+
+      #selection_tool_md {
+        margin-right: 1rem;
+        margin-top: 0.3rem;
+      }
+
+      .selectionMarkerOn {
+        background: #77caa9;
+      }
+
+      .nav-tabs {
+        border-color: #5c6f7d;
+      }
+
+      .nav-tabs > li > a {
+        border:1px dotted #5c6f7d;
+        font-size: 1.3rem;
+      }
+
+      .nav-tabs > li > a:hover {
+        border:1px solid #5c6f7d;
+        border-bottom-color: #5c6f7d;
+      }
+
+      .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
+        border:1px solid #5c6f7d;
+        border-color: #5c6f7d;
+        border-bottom-color: transparent;
+      }
+
+      .nav-tabs > li.active > a {
+        background-color: #DFEAF4;
+      }
+
+      .nav-tabs > li.active > a {
+        font-weight: bold;
+      }
+
+      .tab-content {
+        ul {
+          @include responsive-width;
+          background-color: #eee;
+          box-shadow: -3px 0 6px #aaa, 3px 0 6px #aaa;
+          margin-left: 0px;
+          list-style: none outside none;
+          margin: 0;
+          padding: 0;
+
+          li {
+
+            margin-top: 5px;
+
+            ul {
+              padding-left: 0;
+            }
+
+            float: left;
+            display: inline-block;
+            position: relative;
+            padding: 0 0.5rem;
+            margin-left: 0.3rem;
+            -moz-border-radius: 0.3rem;
+            -webkit-border-radius: 0.3rem;
+
+            a {
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .doc_breadcrumb {
+    @include responsive-width;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #f3cc70;
+
+    input[type=text] {
+      width: 20rem;
+    }
+
+    ol {
+      list-style: none outside none;
+      padding: 0;
+      background-color: #f6f6f6;
+
+      li + li:before {
+        content : "|";
+        color : $border-color
+      }
+
+      li {
+        float: left;
+        background-color: inherit;
+
+        .edit_mode {
+          input[type=text] {
+            height: 2.3rem;
+          }
+        }
+
+        .title_txt {
+          font-weight: bold;
+          color: #495672;
+        }
+
+        div {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .content-box {
+    @include responsive-width;
+    @include document_layout;
+    width: inherit;
+
+    position: absolute;
+    top: $ribbon-height+0.5rem;
+    .doc_morph {
+      min-height: $min-designer-height;
+    }
+
+    margin-bottom: 2rem;
+  }
+
+  .element_content_linemorph {
+    @include linemorph_common;
+    @include content_wrap_editmode;
+  }
+
+  .element_content_listitemmorph {
+    @include content_wrap_editmode;
+    list-style-position:inside;
+  }
+}
+
+.doc_instance {
+  margin: 5px auto;
+  @include responsive-width;
+  .content-box {
+    @include document_layout;
+  }
+
+  .element_content_linemorph {
+    @include linemorph_common;
+  }
+}
+
+
+ul.doc_options {
+  @include ul_plain;
+  > li {
+    display: inline;
+    margin: 5px;
+  }
+}
+
+$modal-border-color: #5C6F7D;
+
+body {
+  background-image: url(asset_path('bg_paper.png'))
+}
+
+.table_border_show {
+    tr {
+      td {
+        border: 1px solid black;
+      }
+    }
+}
+
+.table_border_hide {
+  tr {
+    td {
+      border: 1px dotted #aaa;
+    }
+  }
+}
+
+.style_justify_morph_left {
+  text-align: left;
+}
+
+.style_justify_morph_right {
+  text-align: right;
+}
+
+.style_justify_morph_center {
+  text-align: center;
+}
+
+blockquote {
+  margin:0;
+  padding: 0;
+  padding-left: 1rem;
+  display: inline;
+}
+
+div {
+  outline: 0px;
+}
+
+.element_content_widget_fieldmorph {
+  display: inline-block;
+  border-bottom: 1px dotted #000000;
+
+  .field_address {
+    &:after {
+      content: url(asset_path('fields/address.png'));
+    }
+  }
+
+  .field_checkbox {
+    &:after {
+      content: url(asset_path('fields/checkbox.png'));
+    }
+  }
+
+  .field_date {
+    &:after {
+      content: url(asset_path('fields/date.png'));
+    }
+  }
+
+  .field_email {
+    &:after {
+      content: url(asset_path('fields/email.png'));
+    }
+  }
+
+  .field_file {
+    &:after {
+      content: url(asset_path('fields/file.png'));
+    }
+  }
+
+  .field_name {
+    &:after {
+      content: url(asset_path('fields/name.png'));
+    }
+  }
+
+  .field_number {
+    &:after {
+      content: url(asset_path('fields/number.png'));
+    }
+  }
+
+  .field_phone {
+    &:after {
+      content: url(asset_path('fields/phone.png'));
+    }
+  }
+
+  .field_radio {
+    &:after {
+      content: url(asset_path('fields/radio.png'));
+    }
+  }
+
+  .field_select {
+    &:after {
+      content: url(asset_path('fields/select.png'));
+    }
+  }
+
+  .field_text {
+    &:after {
+      content: url(asset_path('fields/text.png'));
+    }
+  }
+
+  .field_textarea {
+    &:after {
+      content: url(asset_path('fields/textarea.png'));
+    }
+  }
+
+  .field_time {
+    &:after {
+      content: url(asset_path('fields/time.png'));
+    }
+  }
+
+  .field_website {
+    &:after {
+      content: url(asset_path('fields/website.png'));
+    }
+  }
+
+  .field_signature {
+    &:after {
+      content: url(asset_path('fields/signature.png'));
+    }
+  }
+}
+
+@mixin field_style {
+  .column {
+    float: left;
+    margin-right: 10px;
+  }
+
+  input.small, select.small {
+    width: 150px;
+  }
+
+  input.medium, select.medium {
+    width: 250px;
+  }
+
+  input.large, select.large {
+    width: 400px;
+  }
+
+  textarea.small {
+    height: 100px;
+    width: 150px;
+  }
+
+  textarea.medium {
+    height: 150px;
+    width: 200px;
+  }
+
+  textarea.large {
+    height: 250px;
+    width: 300px;
+  }
+
+  .one_column .column {
+    width: 100%;
+  }
+
+  .two_columns .column {
+    width: 48%;
+  }
+
+  .three_columns .column {
+    width: 31%;
+  }
+
+  .side_by_side .column {
+    width: auto;
+  }
+
+  label {
+    font-size: 1.5rem;
+    font-weight: normal;
+  }
+
+  span.required {
+    color: red;
+  }
+}
+
+.field {
+  @include field_style;
+}
+
+#choose_widget_field_modal {
+
+  overflow-x: hidden;
+
+  .section_header {
+    border-bottom: 2px solid $modal-border-color;
+    background-color: #ebebeb;
+    padding: 3px;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .separator {
+    border-bottom: 1px solid $modal-border-color;
+    margin-bottom: 1rem;
+  }
+
+  .margin_top {
+    margin-top: 5px;
+  }
+
+  #input_element_preview {
+    margin-top: 5px;
+    border: 1px solid #C2D7EF;
+    background: #DFEFFF;
+    padding: 3px;
+
+    @include field_style;
+
+    .field {
+      width: auto;
+    }
+  }
+
+  #input_element_config {
+
+    label {
+      font-size: 1.5rem;
+      font-weight: normal;
+    }
+
+    margin-top: 5px;
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      li {
+        div {
+          padding-left: 0;
+          margin-bottom: 5px;
+        }
+      }
+    }
+
+    input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+      margin-left: 0px;
+    }
+
+  }
+}
+
+.canvas-container {
+  border: 1px #808080 dotted;
+  display: inline-block;
+  width: 146px;
+  height: 76px;
+  .canvas {
+    margin: 2px;
+  }
+}
+
+#instance_form {
+  .field {
+    .modal-body {
+      .container {
+        width: auto;
+      }
+    }
+  }
+
+  .error_txt {
+    border: 1px solid;
+    border-color: #b94a48;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+}
+
+.error_box {
+  border: 2px dotted;
+  border-color: #b94a48;
+  padding: 2px;
+}
+

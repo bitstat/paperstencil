@@ -1,0 +1,319 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Line Return Key Test Suite</title>
+
+    <link rel="stylesheet" href="/assets/js_test/qunit/qunit/qunit.css">
+</head>
+<body>
+
+<h1 id="qunit-header">Line Return Key Test Suite</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<div id="qunit-fixture">
+
+</div>
+
+<script src="/assets/js_test/qunit/qunit/qunit.js"></script>
+<script src="keyboard_util.js"></script>
+
+<script src="/assets/jquery.js"></script>
+<script src="/assets/document.js"></script>
+
+
+<script>
+    QUnit.config.autostart = false;
+    $(document).ready(function () {
+        QUnit.start();
+
+        module("Line Return Key Test", {
+            setup:function () {
+                $("#qunit-fixture").append('<div id="doc_container"></div>');
+                WordProcessor.init($("#doc_container"));
+                KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, $(".doc").get(0));
+            }
+        });
+
+        test("In Line, handle return key inside line", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            WordProcessor.setFocusOnTextNode($(".line").first().get(0).firstChild);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, $(".line").first().get(0));
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "&nbsp;", "Check first line content");
+            equal($(lines[1]).html(), "&nbsp;", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal(range.startContainer.parentNode, lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in simple text, start position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("a");
+            WordProcessor.setFocusOnTextNode(firstLine.get(0).firstChild);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "&nbsp;", "Check first line content");
+            equal($(lines[1]).html(), "a", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal(range.startContainer.parentNode, lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in simple text, end position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("a");
+            WordProcessor.setFocusOnTextNode(firstLine.get(0).firstChild, 1);
+
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "a", "Check first line content");
+            equal($(lines[1]).html(), "&nbsp;", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal(range.startContainer.parentNode, lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in simple text, mid position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("ab");
+            WordProcessor.setFocusOnTextNode(firstLine.get(0).firstChild, 1);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "a", "Check first line content");
+            equal($(lines[1]).html(), "b", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal(range.startContainer.parentNode, lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in rich text, start position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("i").get(0).firstChild);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "&nbsp;", "Check first line content");
+            equal($(lines[1]).html(), "<b><i>abcd</i></b>", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in rich text, end position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("i").get(0).firstChild, 4);
+
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "<b><i>abcd</i></b>", "Check first line content");
+            equal($(lines[1]).html(), "&nbsp;", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in rich text, mid position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("i").get(0).firstChild, 2);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "<b><i>ab</i></b>", "Check first line content");
+            equal($(lines[1]).html(), "<b><i>cd</i></b>", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in complex rich text, start position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("i").get(0).firstChild);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "&nbsp;", "Check first line content");
+            equal($(lines[1]).html(), "<b><i>abcd</i></b>1234<b><i>wxyz</i></b>", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in complex rich text, start position 2", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("9876<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.get(0).firstChild);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "&nbsp;", "Check first line content");
+            equal($(lines[1]).html(), "9876<b><i>abcd</i></b>1234<b><i>wxyz</i></b>", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in complex rich text, end position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("i").last().get(0).firstChild, 4);
+
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "<b><i>abcd</i></b>1234<b><i>wxyz</i></b>", "Check first line content");
+            equal($(lines[1]).html(), "&nbsp;", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in complex rich text, end position 2", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>9876");
+            WordProcessor.setFocusOnTextNode(firstLine.get(0).lastChild, 4);
+
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "<b><i>abcd</i></b>1234<b><i>wxyz</i></b>9876", "Check first line content");
+            equal($(lines[1]).html(), "&nbsp;", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in complex rich text, mid position", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("b").get(0).nextSibling, 2);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "<b><i>abcd</i></b>12", "Check first line content");
+            equal($(lines[1]).html(), "34<b><i>wxyz</i></b>", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+
+        test("In Line, handle return key in complex rich text, mid position 2", function () {
+            equal($(".line").length, 2, "Check presence of line elements");
+
+            var firstLine = $(".line").first();
+            firstLine.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnTextNode(firstLine.find("i").last().get(0).firstChild, 2);
+            KeyboardUtil.keypress(KeyboardUtil.KeyCode.DOM_VK_RETURN, firstLine.get(0));
+
+            var lines = $(".line");
+            equal(lines.length, 3, "Check number of lines");
+
+            equal($(lines[0]).html(), "<b><i>abcd</i></b>1234<b><i>wx</i></b>", "Check first line content");
+            equal($(lines[1]).html(), "<b><i>yz</i></b>", "Check second line content");
+            equal($(lines[2]).html(), "&nbsp;", "Check last line content");
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal($(range.startContainer).parents(".line").get(0), lines[1], "Check cursor focus");
+        });
+    });
+</script>
+</body>
+</html>

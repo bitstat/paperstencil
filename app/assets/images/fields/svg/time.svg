@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="32px"
+   height="32px"
+   viewBox="0 0 32 32"
+   style="enable-background:new 0 0 32 32;"
+   xml:space="preserve"
+   id="svg7458"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="time.svg"
+   inkscape:export-filename="/home/selvan/code/paperstencil/app/assets/images/fields/time2.png"
+   inkscape:export-xdpi="67.5"
+   inkscape:export-ydpi="67.5"><metadata
+   id="metadata7472"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs7470" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1301"
+   inkscape:window-height="744"
+   id="namedview7468"
+   showgrid="false"
+   inkscape:zoom="7.375"
+   inkscape:cx="16"
+   inkscape:cy="16"
+   inkscape:window-x="65"
+   inkscape:window-y="24"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg7458" />
+<g
+   id="Layer_1">
+</g>
+<g
+   id="clock"
+   style="fill:#666666">
+	<g
+   id="g7462"
+   style="fill:#666666">
+		<path
+   style="fill:#666666"
+   d="M16,4c6.617,0,12,5.383,12,12s-5.383,12-12,12S4,22.617,4,16S9.383,4,16,4 M16,0    C7.164,0,0,7.164,0,16s7.164,16,16,16s16-7.164,16-16S24.836,0,16,0L16,0z"
+   id="path7464" />
+		<path
+   style="fill:#666666"
+   d="M21.422,18.578L18,15.152V8h-4.023v7.992c0,0.602,0.277,1.121,0.695,1.492l3.922,3.922    L21.422,18.578z"
+   id="path7466" />
+	</g>
+</g>
+</svg>

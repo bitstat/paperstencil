@@ -1,0 +1,4 @@
+class WordProcessor.WPCaret
+
+  @DIRECTION_BEFORE: "BEFORE"
+  @DIRECTION_AFTER: "AFTER"

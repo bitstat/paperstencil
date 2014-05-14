@@ -1,0 +1,32 @@
+Document address :
+%span.form-inline
+  .share_url
+    = "#{request.protocol + request.host_with_port}/a/#{document.address}"
+
+.share_options
+  = form_tag({ :action => :share, :document_id => document.id}, {:method => :post, :remote => true, :"data-type" => "json"}) do
+    %ul
+      - Document::SHARE_OPTIONS.values.each do |option|
+        %li
+          = radio_button_tag 'share_option', option, document.share_option == option
+          - if option == Document::SHARE_OPTIONS[:none]
+            = "No others can have access "
+          - elsif option == Document::SHARE_OPTIONS[:url]
+            = "Anyone who has document URL address can have access"
+          - elsif option == Document::SHARE_OPTIONS[:email]
+            = "Restrict access to below listed emails only (Seperated by ,)"
+            %div
+              = text_area_tag :share_email_participants,  document.participants.map(&:email).join(", "), {:rows=>"5", :class=> "form-control", :style=>"#{document.share_option==Document::SHARE_OPTIONS[:email] ? "" : "display:none"}"}
+
+
+:javascript
+  $(document).ready(function() {
+    $("input[name=share_option]").change(function() {
+      var ele = $(this);
+      if(ele.attr("id") === "share_option_email") {
+        $("#share_email_participants").show();
+      } else {
+        $("#share_email_participants").hide();
+      }
+    });
+  });

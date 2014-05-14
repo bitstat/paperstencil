@@ -1,0 +1,22 @@
+.row.prepend-top5rem
+  .col-md-8.col-xs-8
+    .section_header.append-bottom Forgot your password?
+
+.row
+  .col-md-8.col-xs-8
+    = devise_error_messages!
+
+.row
+  .col-md-5.col-xs-5
+    = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+      %p
+        = f.label :email
+        %span.mandatory *
+        %br/
+        = f.email_field :email, :autofocus => true, :class => "form-control"
+      %p= f.submit "Send me reset password instructions", :class=> "btn btn-primary"
+
+.row
+  .col-md-8.col-xs-8
+    = render :partial => "devise/shared/links"
+

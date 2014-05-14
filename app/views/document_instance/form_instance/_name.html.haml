@@ -1,0 +1,7 @@
+- if ['first', 'last', 'title', 'suffix'].any? { |f| not value[f].empty? }
+  .data
+    - if not value['title'].empty?
+      %b= "#{value['title']}. "
+    - ['first', 'last', 'suffix'].each do |f|
+      %span= value[f]
+

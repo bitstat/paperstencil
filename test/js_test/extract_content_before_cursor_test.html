@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Word processor Test</title>
+
+    <link rel="stylesheet" href="/assets/js_test/qunit/qunit/qunit.css">
+</head>
+<body>
+
+<h1 id="qunit-header">Word processor Test Suite - Extract content before cursor</h1>
+<h2 id="qunit-banner"></h2>
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<div id="qunit-fixture">
+
+</div>
+
+<script src="/assets/js_test/qunit/qunit/qunit.js"></script>
+<script src="keyboard_util.js"></script>
+
+<script src="/assets/jquery.js"></script>
+<script src="/assets/document.js"></script>
+
+
+<script>
+    QUnit.config.autostart = false;
+    $(document).ready(function() {
+        QUnit.start();
+
+        module("Extract content before cursor Test", {
+            setup: function () {
+                $("#qunit-fixture").append('<div id="doc_container"></div>');
+                WordProcessor.init($("#doc_container"));
+            }
+        });
+
+        test( "Test extraction of content before cursor, simple text, cursor at beginning of a line", function() {
+            var doc = $(".doc");
+            doc.html("abcd");
+            WordProcessor.setFocusOnNode(doc.get(0).firstChild);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "&nbsp;", "There is no content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, simple text, cursor at mid of a line", function() {
+            var doc = $(".doc");
+            doc.html("abcd");
+            WordProcessor.setFocusOnNode(doc.get(0).firstChild, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "ab", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, simple text, cursor at end of a line", function() {
+            var doc = $(".doc");
+            doc.html("abcd");
+            WordProcessor.setFocusOnNode(doc.get(0).firstChild, 4);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "abcd", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, rich text, cursor at beginning of a line", function() {
+            var doc = $(".doc");
+            doc.html("<b><i>abcd</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").get(0).firstChild);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "&nbsp;", "There is no content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, rich text, cursor at mid of a line", function() {
+            var doc = $(".doc");
+            doc.html("<b><i>abcd</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").get(0).firstChild, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<b><i>ab</i></b>", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, rich text, cursor at end of a line", function() {
+            var doc = $(".doc");
+            doc.html("<b><i>abcd</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").get(0).firstChild, 4);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<b><i>abcd</i></b>", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, complex rich text, cursor at beginning of a line", function() {
+            var doc = $(".doc");
+            doc.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").get(0).firstChild);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "&nbsp;", "There is no content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, complex rich text, cursor at mid of a line", function() {
+            var doc = $(".doc");
+            doc.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("b").get(0).nextSibling, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<b><i>abcd</i></b>12", "There is content before cursor");
+
+            doc.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("b").first().get(0).nextSibling);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<b><i>abcd</i></b>", "There is content before cursor");
+
+            doc.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").last().get(0).firstChild, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<b><i>abcd</i></b>1234<b><i>wx</i></b>", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, complex rich text, cursor at end of a line", function() {
+            var doc = $(".doc");
+            doc.html("<b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").last().get(0).firstChild, 4);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<b><i>abcd</i></b>1234<b><i>wxyz</i></b>", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, Rich text with DOM element, cursor after DOM element", function() {
+            var doc = $(".doc");
+            doc.html("<input type=\"text\"><b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").get(0).firstChild);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<input type=\"text\"><b><i></i></b>", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, Rich text with DOM element, cursor after DOM element 2", function() {
+            var doc = $(".doc");
+            doc.html("<input type=\"text\"><b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").get(0).firstChild, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<input type=\"text\"><b><i>ab</i></b>", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, Rich text with DOM element, cursor after DOM element 3", function() {
+            var doc = $(".doc");
+            doc.html("<input type=\"text\"><b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("b").get(0).nextSibling, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<input type=\"text\"><b><i>abcd</i></b>12", "There is content before cursor");
+        });
+
+        test( "Test extraction of content before cursor, Rich text with DOM element, cursor after DOM element 4", function() {
+            var doc = $(".doc");
+            doc.html("<input type=\"text\"><b><i>abcd</i></b>1234<b><i>wxyz</i></b>");
+            WordProcessor.setFocusOnNode(doc.find("i").last().get(0).firstChild, 2);
+            var contentBeforeCursor = WordProcessor.contentBeforeCursor(doc.get(0));
+            equal(contentBeforeCursor.html(), "<input type=\"text\"><b><i>abcd</i></b>1234<b><i>wx</i></b>", "There is content before cursor");
+        });
+    });
+</script>
+</body>
+</html>

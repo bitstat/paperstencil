@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Word processor Test</title>
+
+    <link rel="stylesheet" href="/assets/js_test/qunit/qunit/qunit.css">
+</head>
+<body>
+
+<h1 id="qunit-header">Word processor Test Suite - Set cursor focus after element node</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<div id="qunit-fixture">
+
+</div>
+
+<script src="/assets/js_test/qunit/qunit/qunit.js"></script>
+<script src="keyboard_util.js"></script>
+
+<script src="/assets/jquery.js"></script>
+<script src="/assets/document.js"></script>
+
+
+<script>
+    QUnit.config.autostart = false;
+    $(document).ready(function () {
+        QUnit.start();
+
+        module("Set cursor Test", {
+            setup:function () {
+                $("#qunit-fixture").append('<div id="doc_container"></div>');
+                WordProcessor.init($("#doc_container"));
+            }
+        });
+
+        test("Check set focus, after element node", function () {
+            var doc = $(".doc");
+            equal(doc.html(), "", "There is no html inside doc");
+            doc.html("<input type=\"text\">");
+
+            WordProcessor.createTxtNodeAfterThis(doc.get(0).firstChild);
+
+            //check cursor focus is on last node
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            equal(range.startContainer.nodeType, Node.TEXT_NODE);
+            equal(range.startContainer.parentNode, doc.get(0), "Check cursor focus");
+        });
+    });
+</script>
+</body>
+</html>

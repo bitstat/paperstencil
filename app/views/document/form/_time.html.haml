@@ -1,0 +1,15 @@
+.col-md-2
+  %input.form-control.form-morph(type="text" size="2" name="field#{field.id}[h]" value="#{user_value && user_value['h']}")
+  %label.control-label HH
+.col-md-2
+  %input.form-control.form-morph(type="text" size="2" name="field#{field.id}[m]" value="#{user_value && user_value['m']}")
+  %label.control-label MM
+.col-md-2
+  %input.form-control.form-morph(type="text" size="2" name="field#{field.id}[s]" value="#{user_value && user_value['s']}")
+  %label.control-label SS
+.col-md-3
+  %select.form-control.form-morph(name="field#{field.id}[ampm]")
+    %option{ :value => "am", :selected => (user_value && user_value['ampm'] == "am" ) || nil } AM
+    %option{ :value => "pm", :selected => (user_value && user_value['ampm'] == "pm" ) || nil } PM
+  %label.control-label AM/PM
+.clear

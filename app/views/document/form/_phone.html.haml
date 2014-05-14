@@ -1,0 +1,15 @@
+%div
+  - if value["phone_format"] == "international"
+    %input.form-control.form-morph.medium(type="text" name="field#{field.id}[international]" value="#{user_value && user_value['international']}")
+  - else
+    .col-md-2
+      %input.form-control.form-morph(type="text" size="2" value="#{user_value && user_value['first']}" name="field#{field.id}[first]")
+      %label.control-label ###
+    .col-md-2
+      %input.form-control.form-morph(type="text" size="2" value="#{user_value && user_value['second']}" name="field#{field.id}[second]")
+      %label.control-label ###
+    .col-md-3
+      %input.form-control.form-morph(type="text" size="2" value="#{user_value && user_value['third']}" name="field#{field.id}[third]")
+      %label.control-label ###
+    .clear
+

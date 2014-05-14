@@ -1,0 +1,9 @@
+- if @document.share_option == Document::SHARE_OPTIONS[:none]
+  - flash.now[:info] = "<h4>Note: This document is not shared with anyone yet.</h4>"
+
+
+= form_tag({:action => :instance, :address => @document.address}, {:multipart => true, :method => :post, :class=> "", :role => "form", :id=> 'instance_form'}) do
+  = render :partial => "document/design_instance", :locals => { :document => @document }
+
+- content_for :head do
+  :javascript

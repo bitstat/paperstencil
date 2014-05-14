@@ -1,0 +1,146 @@
+!!!
+%html
+  %head
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
+    %meta{content: "Create PDF Form like documents in minutes. No extrenal softwares/plugins required to create them or view them. Works well both on Tablet and Desktop. Create and share PDF Form like documents over internet instantly, saving you & your company the time, money and no hassles of maintaining IT infastructure.", name: "description"}
+    %meta{content: "PDF Form, natural looking form, document form, wordprocessor form, data collection, workflow, capture signature, sign contract, accept payment, payment, signature, contract, wordprocessor, document, tablet, web, mobile, ipad, android, ios, office, enterprise, on premise, behind fire wall, hosted, online, cloud, applications, cloud computing, saas, software as a service, email, web form, web PDF form, form builder, automation, design, software", name: "keywords"}
+    %title
+      = "Paper Stencil"
+    = stylesheet_link_tag    "application", media: "all"
+    -#%link{href: "http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600", rel: "stylesheet", type: "text/css"}
+    %link{href: "//fonts.googleapis.com/css?family=Gentium+Basic:400,700,400italic,700italic", rel: "stylesheet", type: "text/css"}
+    = javascript_include_tag "application"
+    = yield :head
+    = csrf_meta_tags
+  %body
+    .home_menu
+      .navbar.navbar-default.navbar-fixed-top{role: "navigation"}
+        .container
+          - if user_signed_in?
+            .navbar-header
+              %button.navbar-toggle{"data-target" => "#user_signed_in_nav", "data-toggle" => "collapse", type: "button"}
+                %span.sr-only Toggle navigation
+                %span.icon-bar
+                %span.icon-bar
+                %span.icon-bar
+              = link_to image_tag(asset_path('logo2.png')) , user_root_path, {:class=>"navbar-brand", :height=> "32px"}
+            .navbar-collapse.collapse{:id => "user_signed_in_nav"}
+              %ul.nav.navbar-nav.navbar-right
+                %li
+                  = link_to "Home", user_root_path
+                %li
+                  = link_to "Support", info_us_path
+                %li.dropdown
+                  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                    = "#{current_user.email}"
+                    %b.caret
+                  %ul.dropdown-menu
+                    %li
+                      = link_to "Profile", edit_user_registration_path
+                    %li.divider
+                    %li
+                      = link_to "Sign out", destroy_user_session_path, :method => :delete
+          - else
+            .navbar-header
+              = link_to image_tag(asset_path('logo2.png')) , root_path, {:class=>"navbar-brand", :height=> "32px"}
+              %button.navbar-toggle{"data-target" => "#user_not_signed_in_nav", "data-toggle" => "collapse", type: "button"}
+                %span.sr-only Toggle navigation
+                %span.icon-bar
+                %span.icon-bar
+                %span.icon-bar
+            .navbar-collapse.collapse{:id => "user_not_signed_in_nav"}
+              %ul.nav.navbar-nav.navbar-right
+                %li{:class=>"#{action_name == "home"? "active" : ""}"}
+                  = link_to "Home" , root_path
+                %li
+                  %a{:href=> "https://github.com/bitstat/paperstencil", :target => "_new"}
+                    Community
+                %li
+                  %a{:href=> url_for(:action => "login", :controller => "/demo")}
+                    Tour
+                %li{:class=>"#{action_name == "pricing"? "active" : ""}"}
+                  %a{:href=> url_for(:action => "pricing", :controller => "/info")}
+                    Pricing
+                %li{:class=>"#{action_name == "us"? "active" : ""}"}
+                  = link_to "Contact", info_us_path
+                %li{:class=>"#{(controller_name == "sessions" and action_name == "new" )? "active" : ""}"}
+                  = link_to "Sign in", user_session_path
+
+    .container.body-box
+      .row.flash
+        - flash.each do |name, msg|
+          %p{:class => name}
+            != msg
+      .row
+        = yield
+    = yield :per_page_js
+    .container.footer-box
+      - unless user_signed_in?
+        .row.signed_out_footer
+          .our_product.col-md-5
+            .row
+              .heading
+                Our Product
+            .row
+              %ul.border
+                %li
+                  %a{:href=> url_for(:action => "pricing", :controller => "/info")}
+                    Pricing
+                %li
+                  %a{:href=> url_for(:action => "login", :controller => "/demo")}
+                    Tour
+                %li
+                  = link_to "Support", info_us_path
+              %ul.border
+                %li
+                  = link_to "Contact", info_us_path
+                %li
+                  = link_to "About", info_us_path
+                %li
+                  %a{:href=> "http://blog.paperstencil.com"}
+                    Blog
+              %ul
+                %li
+                  %a{:href=> "http://www.twitter.com/paperstencil"}
+                    %img{:src => "#{asset_path('social/twitter.png')}", :width=>16, :height=>16}
+                -#%li
+                -#  %img{:src => "#{asset_path('social/linkedin.png')}", :width=>16, :height=>16}
+
+
+          .blog.col-md-6.col-md-offset-1
+            .row
+              .heading
+                Latest Blog Posts
+            .row
+              #blog_latest
+      .row.common_footer
+        %div
+          %ul
+            %li.first
+              Copyright &copy; 2014 onwards
+            %li
+              %a{:href=> url_for(:action => "tos", :controller => "/info")}
+                Terms of Service
+            %li
+              %a{:href=> url_for(:action => "privacy", :controller => "/info")}
+                Privacy Policy
+
+- unless user_signed_in?
+  %script{:type =>"text/javascript", :src => "//www.google.com/jsapi?key=ABQIAAAA38bJrFUIr6fXVLpuJbo7ZBSMZvcfViEaB8tdgkrE6NjRp_9WQBQhwO0_eJy9-s6uHbFmJ4cA134r7Q"}
+  = javascript_include_tag "blog-latest"
+
+= render :partial => "layouts/shared"
+
+- if Rails.env == "production"
+  :javascript
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-50078697-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+

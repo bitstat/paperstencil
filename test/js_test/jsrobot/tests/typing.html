@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+   <!--
+   Copyright 2010 Ephox Corporation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   -->
+    <head>
+    	<title>Unit tests for typing</title>
+		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			google.load("jquery", "1.3");
+		</script>
+        <link rel="stylesheet" href="qunit/qunit.css" type="text/css" media="screen" />
+        <script type="text/javascript" src="qunit/qunit.js"></script>
+		
+        <script>
+        	$(document).ready(function() {
+				var content, contentDocument;
+				module('Typing In Textarea', {
+					setup: function() { 
+		        		content = document.getElementById('content');
+						content.value = '';
+						content.focus();
+					}
+				});
+		        asyncTest('Simple character', function() {
+					expect(1);
+					robot.type(0x41, false, function() {
+						equals(content.value, 'a');
+						QUnit.start();
+					});
+		        });
+				
+				asyncTest('Converting from character to keycode', function() {
+					expect(1);
+					robot.type('f', false, function() {
+						equals(content.value, 'f');
+						QUnit.start();
+					});
+				});
+				
+				asyncTest('Converting from upper case character to keycode', function() {
+					expect(1);
+					robot.type('Z', false, function() {
+						equals(content.value, 'z');
+						QUnit.start();
+					});
+				});
+				
+				asyncTest('Typing with shift key', function() {
+					expect(1);
+					robot.type('h', true, function() {
+						equals(content.value, 'H');
+						QUnit.start();
+					});
+				});
+				
+				test('Typing non-ascii character is forbidden (use directly key code instead)', function() {
+					expect(1);
+					try {
+						robot.type('^', false);
+						ok(false, 'Should have thrown exception on invalid character.');
+					} catch (e) {
+						ok(true, 'Correctly threw exception on invalid character');
+					}
+				});
+				
+				asyncTest('Typing enter', function() {
+					expect(1);
+					robot.type('\n', false, function() {
+						ok(content.value =='\n' || content.value == '\r\n', 'Expected a line ending and got:' + content.value + ": Focus is on: " + document.activeElement);
+						QUnit.start();
+					});
+				});
+				
+				asyncTest('Typing backspace', function() {
+					expect(1);
+					content.value = 'test';
+					content.select();
+					robot.type('\b', false, function() {
+						equals(content.value, '', 'Should have deleted content');
+						QUnit.start();
+					});
+				});
+				
+				asyncTest('Cut and paste', function() {
+					expect(2);
+					content.value = 'test';
+					content.select();
+					robot.cut(function() {
+						equals(content.value, '', 'Cut content from field.');
+						robot.paste(function() {
+							equals(content.value, 'test', 'Paste content back in.');
+							QUnit.start();
+						});
+					});
+				});
+				
+				asyncTest('Copy and paste', function() {
+					expect(2);
+					content.value = 'copy';
+					content.select();
+					robot.copy(function() {
+						equals(content.value, 'copy', 'Copy content from field.');
+						content.value = 'start';
+						content.select();
+						robot.paste(function() {
+							equals(content.value, 'copy', 'Paste content back in.');
+							QUnit.start();
+						});
+					});
+				});
+				
+				if (document.activeElement) {
+					asyncTest('Typing tab', function() {
+						expect(2);
+						robot.type('\t', false, function(){
+							equals(content.value, '', 'Should have moved focus instead of typing in text area');
+							equals(document.activeElement, document.getElementById('nextFocus'));
+							QUnit.start();
+						});
+					});
+				} else {
+					test('Skipping tab test because browser has no document.activeElement support', function() {});
+				}
+				
+				function getFrameDocument(content) {
+					contentDocument = (content.contentWindow || content.contentDocument);
+					if (contentDocument.document) {
+						contentDocument = contentDocument.document;
+					}
+					contentDocument.designMode = "On";
+				}
+				
+				var frame;
+				function setupEditableIframe(content, callback) {
+					window.iframeLoaded = function(doc) {
+						// We need a timeout for Firefox compatibility. If the iframe isn't already on screen it just throws an error and painting can't happen until JavaScript stops running.
+						setTimeout(function() {
+							// IE needs to use contentEditable even though we set designMode in the src URL javascript.
+							if ($.browser.msie) {
+								doc.body.contentEditable = true;
+							} else {
+								doc.designMode = "On";
+							}
+							doc.body.focus();
+							callback(doc);
+						}, 10);
+					}
+					frame = document.createElement('iframe');
+					frame.height = '100';
+					frame.width = '100';
+					document.body.appendChild(frame);
+					frame.src = 'javascript:document.open();document.write("<html><head></head><body>' + content + '</body></html>");document.close();window.parent.iframeLoaded(document);';
+				}
+				
+				module('Typing in iframe with design mode', {
+					teardown: function() {
+						if (frame) {
+							document.body.removeChild(frame);
+							frame = null;
+						}
+					}
+				});
+				
+				asyncTest('Typing simple character', function() {
+					expect(1);
+					setupEditableIframe("", function(contentDocument) {
+						document.getElementById('nextFocus').focus();
+						robot.type('\t', false, function() {
+							robot.type('m', false, function() {
+								equals(contentDocument.body.innerHTML, 'm');
+								QUnit.start();
+							});
+						});
+					});
+				});
+				
+				asyncTest('Delete', function() {
+					expect(1);
+					setupEditableIframe("content", function(contentDocument) {
+						document.getElementById('nextFocus').focus();
+						robot.type('\t', false, function() {
+							robot.forwardDelete(function() {
+								equals(contentDocument.body.innerHTML, 'ontent');
+								QUnit.start();
+							});
+						});
+					});
+				});
+				
+				window.robot.onload(function() {
+					QUnit.setup();
+				});
+			});
+        </script>
+    </head>
+    <body>
+        <h1 id="qunit-header">Unit tests for typing</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		
+		<textarea id="content" rows="10" cols="80"></textarea>
+		<input type="text" value="Here for focus" id="nextFocus" />
+		
+		<script type="text/javascript" language="JavaScript" src="../robot.js"></script>
+    </body>
+	
+</html>

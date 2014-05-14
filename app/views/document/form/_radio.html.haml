@@ -1,0 +1,8 @@
+%div{:class => value["field_layout"]}
+  - value["radios"].each_with_index do |r, i|
+    .column
+      %input{:type => "radio", :checked => user_value.nil? ? r["checked"] || nil : user_value == i.to_s,
+             :name => "field#{field.id}", :value => i, :class=> "form-morph"}
+      %label.control-label
+        = r["text"]
+.clear

@@ -1,0 +1,101 @@
+%div.doc_designer
+  .container.doc_breadcrumb
+    %ol.breadcrumb
+      %li
+        %a{:href=>"#{url_for(:controller => "document", :action => "design_list")}"}
+          %span.glyphicon.glyphicon-book
+          All Documents
+      %li
+        = @document.title
+
+= render :partial => "field_list", :locals => { :fields => @document.fields }
+.saved_instance_list_wrapper
+  %table.saved_instance_list
+    = render :partial => "field_columns", :locals => { :fields => @document.fields }
+    %tbody
+      - @document_instances.each_with_index do |document_instance, index|
+        = render :partial => "field_data", :locals => { :document_instance => document_instance, :fields => @document.fields, :index => index}
+
+- content_for :head do
+  = javascript_include_tag :persist
+  :javascript
+      // client side store
+      var DOCSTORE;
+      var DocumentInstance = DocumentInstance || {};
+
+      DOCSTORE = new Persist.Store("paperstencil");
+      // $(window).unload(function(){
+      //     DOCSTORE.save();
+      // });
+
+      DOCSTORE.get_object = function(key) {
+          var text = DOCSTORE.get(key);
+          if (text) {
+              return JSON.parse(text);
+          }
+          return undefined;
+      };
+
+      DOCSTORE.set_object = function(key, value) {
+            DOCSTORE.set(key, JSON.stringify(value));
+        };
+
+      DocumentInstance.updateFieldVisibility = function() {
+          var field_ids = [];
+          var preferenceAvailable = false;
+          $('.field_list li').each(function() {
+              var show = false;
+              var field_id = $(this).data('field_id');
+              field_ids.push(field_id);
+
+              //console.log(DOCSTORE.get_object(field_id));
+
+              if ((show = DOCSTORE.get_object(field_id)) != undefined) {
+                  preferenceAvailable = true;
+                  if (show) {
+                      $('td.field-col-' + field_id).removeClass('hide');
+                      $(this).addClass('visible');
+                  } else {
+                      $('td.field-col-' + field_id).addClass('hide');
+                      $(this).removeClass('visible');
+                  }
+              }
+          });
+
+          if (!preferenceAvailable) {
+              var field_id = null;
+              for (var i = 0; i < 3; i++) {
+                  if ((field_id = field_ids[i])) {
+                      DOCSTORE.set_object(field_id, true);
+                      $('td.field-col-' + field_id).toggleClass('hide');
+                      $('.field_list li.field-col-' + field_id).toggleClass('visible');
+                  }
+              }
+          }
+      };
+
+
+      $(document).ready(function() {
+        DocumentInstance.updateFieldVisibility();
+        $('.add_field a').bind('click', function() {
+            var el =$('.field_list');
+            el.removeClass('hide');
+            el.addClass('show');
+            return false;
+        });
+
+        $('.field_list a.done').bind('click', function() {
+            var el = $(this).closest('.field_list');
+            el.removeClass('show');
+            el.addClass('hide');
+            return false;
+        });
+
+        $('.field_list li').on('click', function() {
+            var field_id = $(this).data('field_id');
+            $('td.field-col-' + field_id).toggleClass('hide');
+            $(this).toggleClass('visible');
+            DOCSTORE.set_object(field_id, $(this).hasClass('visible'));
+            return false;
+        });
+      });

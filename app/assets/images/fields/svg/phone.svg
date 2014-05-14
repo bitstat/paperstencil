@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="48px"
+   height="48px"
+   id="svg3691"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   inkscape:export-filename="/home/selvan/code/paperstencil/app/assets/images/fields/phone2.png"
+   inkscape:export-xdpi="45"
+   inkscape:export-ydpi="45"
+   sodipodi:docname="phone.svg">
+  <defs
+     id="defs3693" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7"
+     inkscape:cx="24"
+     inkscape:cy="24"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       orientation="0,1"
+       position="9,24.142857"
+       id="guide3706" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="24,42.142857"
+       id="guide3710" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="2,49.142857"
+       id="guide3712" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="46,46.714286"
+       id="guide3714" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-36.285714,2"
+       id="guide3716" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-44.142857,46"
+       id="guide3718" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-36.714286,35"
+       id="guide3722" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-27.142857,13"
+       id="guide3724" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="4,48.857143"
+       id="guide3730" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="44,51.285714"
+       id="guide3734" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-35.571429,15"
+       id="guide3736" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-33.142857,33"
+       id="guide3738" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata3696">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       id="iphone"
+       style="fill:#666666"
+       transform="matrix(1.1666667,0,0,1.375,10,2)">
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#666666"
+         d="M 16,0 H 8 C 3.582,0 0,3.582 0,8 v 16 c 0,4.418 3.582,8 8,8 h 8 c 4.418,0 8,-3.582 8,-8 V 8 C 24,3.582 20.418,0 16,0 z m -4,30.062 c -1.139,0 -2.062,-0.922 -2.062,-2.062 0,-1.14 0.924,-2.062 2.062,-2.062 1.138,0 2.062,0.922 2.062,2.062 0,1.14 -0.923,2.062 -2.062,2.062 z M 20,24 H 4 V 8 C 4,5.797 5.795,4 8,4 h 8 c 2.203,0 4,1.797 4,4 v 16 z"
+         id="path7168" />
+    </g>
+  </g>
+</svg>
