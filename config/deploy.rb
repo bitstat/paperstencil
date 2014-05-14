@@ -6,7 +6,7 @@ set :rvm_ruby_string, '2.1.0@rails410'
 #set :rvm_type, :user
 
 set :application, "paperstencil"
-set :repository,  "ssh://git@github.com:bitstat/paperstencil.git"
+set :repository,  "git@github.com:bitstat/paperstencil.git"
 
 default_run_options[:pty] = true
 set :deploy_to, "/var/paperstencil"
