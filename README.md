@@ -17,9 +17,9 @@ With Paperstencil, text or form element can be positioned at any part of page by
 ## Features
 
 * Create "PDF Form" like natural looking document without external plugins.
-* Validate and capture user signature and other user inputs such as addess, email, date etc.
-* Contructed documents shall be viewed on both Desktop and Tablets without external plugins.
-* Constructed document shall be shared as HREF link, thus making it easy to embed in other web assets and email.
+* Validate and capture user signature and other user inputs such as address, email, date etc.
+* Constructed documents shall be viewed on both Desktop and Tablets without external plugins.
+* Constructed document shall be shared as web link, thus making it easy to embed in other web assets and email.
 * Table/Nested tables make it easy to structure custom page layouts.
 * Accept payments (Work in progress - Stripe integration?)
 
