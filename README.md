@@ -1,4 +1,4 @@
-#Paperstencil
+# Paperstencil
 
 A crossover between Wordprocessor and Web form.
 
@@ -6,10 +6,10 @@ Paperstencil helps enterprises to roll-out data collection solutions, contracts,
 
 Wordprocessors such as "MS Word" are good for constructing documents. Web forms are good at validating and capturing user input. Meet "Paperstencil", a cross over product between Wordprocessor and Web form.
 
-###Mixing words and form elements
+### Mixing words and form elements
 ![Mixing words and form elements](https://s3.amazonaws.com/paperstencil/assets/wordprocessor.gif)
 
-###Page layout
+### Page layout
 With Paperstencil, text or form element can be positioned at any part of page by using table (and nested tables). Table border shall be configured to be hidden.
 
 ![Mixing words and form elements](https://s3.amazonaws.com/paperstencil/assets/layout.gif)
@@ -23,13 +23,13 @@ With Paperstencil, text or form element can be positioned at any part of page by
 * Table/Nested tables make it easy to structure custom page layouts.
 * Accept payments (Work in progress - Stripe integration?)
 
-##Demo / Tour
+## Demo / Tour
 Go to [http://www.paperstencil.com/demo](http://www.paperstencil.com/demo) to experience paperstencil in action.
 
-##Hosted version
+## Hosted version
 Hosted version of paperstencil is available at [paperstencil.com](http://www.paperstencil.com/)
 
-##Technology
+## Technology
 
 Requires **ruby 2.1.0** and **rails 4.1.0**
 
@@ -46,7 +46,7 @@ Requires **ruby 2.1.0** and **rails 4.1.0**
 * config/god/unicorn.god - Unicorn config for god, the process manager.
 * config/deploy.rb - Capistrano deploy config for Paperstencil.com.
 
-##License
+## License
 Apache License, Version 2.0
 
 
